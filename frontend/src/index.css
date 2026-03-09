@@ -7,21 +7,43 @@
 @layer base {
 
   :root {
-    --color-bg: #FFFACD;          /* Light Yellow Background */
-    --color-card: #FBF8F2;        /* #FBF8F2 */
-    --color-border: #E6E0D6;      /* #E6E0D6 */
-    --color-primary: #7FA37C;     /* #7FA37C */
-    --color-accent: #E9C46A;      /* #E9C46A */
-    --color-text: #2F3A3A;        /* #2F3A3A */
+    --color-bg: #FFFACD;
+    /* Light Yellow Background */
+    --color-card: #FBF8F2;
+    /* #FBF8F2 */
+    --color-border: #E6E0D6;
+    /* #E6E0D6 */
+    --color-primary: #7FA37C;
+    /* #7FA37C */
+    --color-accent: #E9C46A;
+    /* #E9C46A */
+    --color-text: #2F3A3A;
+    /* #2F3A3A */
+  }
+
+  .dark {
+    --color-bg: #020617;
+    --color-card: #0F172A;
+    --color-border: #1E293B;
+    --color-primary: #34D399;
+    --color-accent: #FDE68A;
+    --color-text: #F8FAFC;
+    /* ← THIS makes journal text white */
   }
 
   [data-theme='dark'] {
-    --color-bg: #1F2421;             /* #1F2421 */
-    --color-card: #2A2F2B;           /* #2A2F2B */
-    --color-border: #3A403A;         /* #3A403A */
-    --color-primary: #7FA37C;     /* #7FA37C */
-    --color-accent: #E9C46A;      /* #E9C46A */
-    --color-text: #EDEDE9;        /* #EDEDE9 */
+    --color-bg: #1F2421;
+    /* #1F2421 */
+    --color-card: #2A2F2B;
+    /* #2A2F2B */
+    --color-border: #3A403A;
+    /* #3A403A */
+    --color-primary: #7FA37C;
+    /* #7FA37C */
+    --color-accent: #E9C46A;
+    /* #E9C46A */
+    --color-text: #EDEDE9;
+    /* #EDEDE9 */
   }
 
   body {
@@ -33,15 +55,18 @@
 
 /* Custom Ghibli Overrides */
 *:focus {
-  outline-color: rgba(0,0,0,0.1);
+  outline-color: rgba(0, 0, 0, 0.1);
 }
+
 ::-webkit-scrollbar-track {
-  background: transparent; 
+  background: transparent;
 }
+
 ::-webkit-scrollbar-thumb {
-  background: rgba(127, 183, 126, 0.2); 
+  background: rgba(127, 183, 126, 0.2);
   border-radius: 10px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(127, 183, 126, 0.4); 
+  background: rgba(127, 183, 126, 0.4);
 }
