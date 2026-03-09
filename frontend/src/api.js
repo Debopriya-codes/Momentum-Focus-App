@@ -1,8 +1,8 @@
 // ── Central API Service for Momentum ─────────────────────────────────────────
-// All calls go to the Spring Boot backend at localhost:8080
+// All calls go to the Spring Boot backend hosted on Railway
 // JWT is stored in localStorage and attached to every request automatically.
 
-const BASE = "http://localhost:8080/api";
+const BASE = "https://momentum-productivity-partner-production.up.railway.app/api";
 
 // ── Token helpers ─────────────────────────────────────────────────────────────
 export const getToken = () => localStorage.getItem("momentum_jwt");
