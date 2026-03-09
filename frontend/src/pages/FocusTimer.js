@@ -71,7 +71,6 @@ export default function FocusTimerPage() {
         startPause, reset, setPreset,
     } = useFocusTimer();
 
-    const todayStr = new Date().toISOString().slice(0, 10);
 
     return (
         <div className="max-w-6xl mx-auto space-y-10 w-full p-4 md:p-10 animate-[fadeIn_0.5s_ease-out]">

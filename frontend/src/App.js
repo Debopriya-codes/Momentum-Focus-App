@@ -104,7 +104,7 @@ function AppInner() {
     const [page, setPage]             = useState("dashboard");
     const [theme, setTheme]           = useState("light");
 
-    const { running } = useFocusTimer();
+
 
     useEffect(() => {
         document.documentElement.setAttribute("data-theme", theme);

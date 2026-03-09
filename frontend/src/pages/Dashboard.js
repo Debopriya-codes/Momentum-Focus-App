@@ -337,9 +337,8 @@ function Dashboard({ navigate }) {
         return () => clearInterval(id);
     }, []);
 
-    // Drop sessions from local state — we get todayMins from context
-    const today = todayStr();
     // Read live focus total from the global timer context
+
     // so the dashboard watch always matches the running timer
     const { totalTodayMins } = useFocusTimer();
     const streak = computeStreak(habits);
