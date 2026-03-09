@@ -71,12 +71,16 @@ public class SecurityConfig {
 
         return http.build();
     }
-
     @Bean
     public CorsConfigurationSource corsSource() {
+
         CorsConfiguration config = new CorsConfiguration();
 
-        config.setAllowedOriginPatterns(List.of("*"));
+        config.setAllowedOrigins(List.of(
+            "https://momentum-focus-app.vercel.app",
+            "http://localhost:3000"
+        ));
+
         config.setAllowedMethods(List.of("GET","POST","PUT","DELETE","PATCH","OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
