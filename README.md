@@ -3,6 +3,8 @@
 Momentum is a modern productivity web application designed to help users organize tasks, track habits, focus deeply, and reflect on progress.
 It combines a **task manager, habit tracker, focus timer, journal, and analytics dashboard** into one clean productivity system
 
+Live at: https://momentum-focus-app.vercel.app/
+
 ## Features
 
 • Task Management (Daily / Weekly / Monthly planners)  
