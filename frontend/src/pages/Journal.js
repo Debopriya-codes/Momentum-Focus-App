@@ -18,7 +18,7 @@ function formatDisplayDate(dateStr) {
 function HandwrittenInput({ question, value, onChange }) {
   return (
     <div className="mb-8">
-      <p className="font-heading font-bold text-lg text-[#2F3E46] mb-3 leading-relaxed">{question}</p>
+      <p className="font-heading font-bold text-lg text-ghibli-text mb-3 leading-relaxed">{question}</p>
       <div className="relative font-ui text-xl">
         <div className="absolute inset-x-0 bottom-0 top-3 pointer-events-none" style={{ backgroundImage: "repeating-linear-gradient(transparent, transparent 31px, rgba(168,218,220,0.4) 32px)", backgroundAttachment: "local" }} />
         <textarea
@@ -56,7 +56,7 @@ export default function Journal() {
             <div className="flex items-center gap-4">
                 <BookOpen className="text-[#D4A373] drop-shadow-sm" size={40} />
                 <div>
-                    <h2 className="text-4xl font-quote font-black text-[#2F3E46]">The Daily Chronicle</h2>
+                    <h2 className="text-4xl font-quote font-black text-ghibli-text">The Daily Chronicle</h2>
                     <p className="text-[#A3A8A6] font-ui font-semibold text-sm mt-1 italic">
                         "A journey of a thousand miles begins with a single step."
                     </p>
@@ -66,7 +66,7 @@ export default function Journal() {
                 <button onClick={handlePrevDay} className="p-2 text-[#7FB77E] hover:bg-ghibli-bg rounded-xl transition">
                     <ChevronLeft size={20} />
                 </button>
-                <div className="flex items-center gap-2 px-4 font-heading font-bold text-[#2F3E46]">
+                <div className="flex items-center gap-2 px-4 font-heading font-bold text-ghibli-text">
                     <CalendarDays size={18} className="text-[#D4A373]" />
                     {isToday ? "Today" : formatDisplayDate(currentDate)}
                 </div>
@@ -136,6 +136,8 @@ function Writer() {
 
     return (
         <div className="bg-[url('https://www.transparenttextures.com/patterns/rice-paper.png')] bg-ghibli-card border-2 border-ghibli-border rounded-3xl p-8 shadow-[0_8px_30px_rgba(0,0,0,0.03)] relative">
+            <div className="absolute top-[-12px] left-1/2 -translate-x-1/2 w-48 h-10 bg-ghibli-card/50 shadow-sm border border-white/60 rotate-[1deg] z-20 backdrop-blur-md" />
+
             <div className="flex flex-wrap gap-4 mb-10 border-b-2 border-ghibli-border pb-4 sticky top-0 z-10 pt-4 bg-ghibli-card/80 backdrop-blur-md">
                 {TABS.map(t => {
                     const active   = activeTab === t.id;
@@ -145,7 +147,7 @@ function Writer() {
                             key={t.id}
                             onClick={() => setActiveTab(t.id)}
                             className={`flex items-center gap-2 px-6 py-3 rounded-2xl font-heading font-bold text-lg transition-all duration-300 ${
-                                active ? 'bg-ghibli-card shadow-[0_4px_12px_rgba(0,0,0,0.05)] text-[#2F3E46] scale-105 border border-ghibli-border' : 'text-[#A3A8A6] hover:bg-ghibli-card/50'
+                                active ? 'bg-ghibli-card shadow-[0_4px_12px_rgba(0,0,0,0.05)] text-ghibli-text scale-105 border border-ghibli-border' : 'text-[#A3A8A6] hover:bg-ghibli-card/50'
                             }`}
                         >
                             <span className="text-xl">{t.icon}</span> {t.label}
@@ -197,9 +199,9 @@ function Reader({ date, onReturn }) {
         return (
             <div className="mt-20 flex flex-col items-center justify-center p-12 bg-ghibli-bg border-2 border-dashed border-ghibli-border rounded-3xl text-center">
                 <Info size={48} className="text-[#D4A373] opacity-40 mb-4" />
-                <p className="font-heading font-bold text-2xl text-[#2F3E46]/60 mb-2">Blank Page</p>
-                <p className="font-ui text-[#2F3E46]/40 mb-6">No journal entry was written on this day.</p>
-                <button onClick={onReturn} className="px-6 py-2 bg-ghibli-card border-2 border-ghibli-border rounded-xl font-heading font-bold text-[#2F3E46] shadow-sm hover:shadow-md transition">
+                <p className="font-heading font-bold text-2xl text-ghibli-text/60 mb-2">Blank Page</p>
+                <p className="font-ui text-ghibli-text/40 mb-6">No journal entry was written on this day.</p>
+                <button onClick={onReturn} className="px-6 py-2 bg-ghibli-card border-2 border-ghibli-border rounded-xl font-heading font-bold text-ghibli-text shadow-sm hover:shadow-md transition">
                     Return to Today
                 </button>
             </div>
@@ -225,7 +227,7 @@ function Reader({ date, onReturn }) {
                     if (!answers.some(a => a && a.trim())) return null;
                     return (
                         <div key={tab.id}>
-                            <h4 className="flex items-center gap-3 font-quote font-black text-3xl text-[#2F3E46] mb-6">
+                            <h4 className="flex items-center gap-3 font-quote font-black text-3xl text-ghibli-text mb-6">
                                 <span className="text-2xl">{tab.icon}</span> {tab.label}
                             </h4>
                             <div className="space-y-8 pl-10 border-l-[3px] border-[#A8DADC]/40">
@@ -234,7 +236,7 @@ function Reader({ date, onReturn }) {
                                     return (
                                         <div key={i}>
                                             <p className="font-heading font-bold text-sm text-[#A3A8A6] mb-2 uppercase tracking-wide">{q.replace(/^\d+\.\s*/, '')}</p>
-                                            <p className="font-ui text-xl text-[#2F3E46] leading-relaxed italic border-b border-ghibli-border pb-4">{answers[i]}</p>
+                                            <p className="font-ui text-xl text-ghibli-text leading-relaxed italic border-b border-ghibli-border pb-4">{answers[i]}</p>
                                         </div>
                                     );
                                 })}
