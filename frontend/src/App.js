@@ -12,10 +12,9 @@ import { getToken, clearToken } from "./api";
 import { FocusTimerProvider, useFocusTimer } from "./context/FocusTimerContext";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 
-// ── Your Google OAuth Client ID ─────────────────────────────────────────────
-// Replace with your real Client ID from Google Cloud Console
+// ── Google OAuth Client ID ───────────────────────────────────────────────────
 const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID ||
-    "YOUR_GOOGLE_CLIENT_ID_HERE";
+    "1038749720495-p7a974fn7p5j8sj60qqp1jrlrue46q8j.apps.googleusercontent.com";
 
 // ── Floating mini-timer pill (global, shown on every page) ─────────────────────
 function MiniTimer({ navigate }) {
