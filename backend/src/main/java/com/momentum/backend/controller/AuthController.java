@@ -25,28 +25,20 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    @Autowired
-    private UserRepository userRepository;
+    @Autowired private UserRepository userRepository;
+    @Autowired private PasswordEncoder passwordEncoder;
+    @Autowired private AuthenticationManager authManager;
+    @Autowired private JwtUtils jwtUtils;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private AuthenticationManager authManager;
-
-    @Autowired
-    private JwtUtils jwtUtils;
-
-
-    // -------- REGISTER --------
-
+    // ────────────────────────────────────────────────────────────────
+    // REGISTER
+    // ────────────────────────────────────────────────────────────────
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody AuthDto.RegisterRequest req) {
 
         if (userRepository.existsByEmail(req.getEmail())) {
             return ResponseEntity.badRequest().body("Email already registered.");
         }
-
         if (userRepository.existsByUsername(req.getUsername())) {
             return ResponseEntity.badRequest().body("Username already taken.");
         }
@@ -55,51 +47,46 @@ public class AuthController {
                 .username(req.getUsername())
                 .email(req.getEmail())
                 .password(passwordEncoder.encode(req.getPassword()))
+                .provider("LOCAL")
                 .build();
 
         userRepository.save(user);
 
         String token = jwtUtils.generateToken(user.getEmail());
-
-        return ResponseEntity.ok(
-                new AuthDto.AuthResponse(
-                        token,
-                        user.getId(),
-                        user.getUsername(),
-                        user.getEmail()
-                )
-        );
+        return ResponseEntity.ok(toResponse(token, user));
     }
 
-
-    // -------- LOGIN --------
-
+    // ────────────────────────────────────────────────────────────────
+    // LOGIN
+    // ────────────────────────────────────────────────────────────────
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody AuthDto.LoginRequest req) {
 
         Authentication authentication = authManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        req.getEmail(),
-                        req.getPassword()
-                )
+                new UsernamePasswordAuthenticationToken(req.getEmail(), req.getPassword())
         );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
         User user = userRepository.findByEmail(userDetails.getUsername())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         String token = jwtUtils.generateToken(user.getEmail());
+        return ResponseEntity.ok(toResponse(token, user));
+    }
 
-        return ResponseEntity.ok(
-                new AuthDto.AuthResponse(
-                        token,
-                        user.getId(),
-                        user.getUsername(),
-                        user.getEmail()
-                )
+    // ────────────────────────────────────────────────────────────────
+    // Helper
+    // ────────────────────────────────────────────────────────────────
+    private AuthDto.AuthResponse toResponse(String token, User user) {
+        return new AuthDto.AuthResponse(
+                token,
+                user.getId(),
+                user.getUsername(),
+                user.getEmail(),
+                user.getAvatarUrl(),
+                user.getProvider()
         );
     }
 }

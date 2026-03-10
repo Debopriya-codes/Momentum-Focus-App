@@ -14,6 +14,11 @@ public interface FocusSessionRepository extends JpaRepository<FocusSession, Long
     @Query("SELECT COALESCE(SUM(f.duration), 0) FROM FocusSession f WHERE f.user.id = :userId AND f.date = :date")
     int sumDurationByUserIdAndDate(@Param("userId") Long userId, @Param("date") LocalDate date);
 
-    @Query("SELECT MONTH(f.date) as month, SUM(f.duration) as total FROM FocusSession f WHERE f.user.id = :userId AND YEAR(f.date) = :year GROUP BY MONTH(f.date)")
-    List<Object[]> monthlyTotals(@Param("userId") Long userId, @Param("year") int year);
+    // Uses standard date-range instead of dialect-specific MONTH()/YEAR() functions
+    @Query("SELECT f FROM FocusSession f WHERE f.user.id = :userId AND f.date >= :startDate AND f.date <= :endDate ORDER BY f.date ASC")
+    List<FocusSession> findByUserIdAndDateBetween(
+        @Param("userId") Long userId,
+        @Param("startDate") LocalDate startDate,
+        @Param("endDate") LocalDate endDate
+    );
 }

@@ -25,6 +25,13 @@ public class AuthDto {
         private String password;
     }
 
+    /** Sent from the frontend after Google One-Tap / Sign-in button succeeds */
+    @Data
+    public static class GoogleAuthRequest {
+        @NotBlank
+        private String credential; // The Google ID token (JWT)
+    }
+
     @Data
     public static class AuthResponse {
         private String token;
@@ -32,12 +39,17 @@ public class AuthDto {
         private Long id;
         private String username;
         private String email;
+        private String avatarUrl;
+        private String provider;
 
-        public AuthResponse(String token, Long id, String username, String email) {
-            this.token = token;
-            this.id = id;
-            this.username = username;
-            this.email = email;
+        public AuthResponse(String token, Long id, String username, String email,
+                            String avatarUrl, String provider) {
+            this.token     = token;
+            this.id        = id;
+            this.username  = username;
+            this.email     = email;
+            this.avatarUrl = avatarUrl;
+            this.provider  = provider;
         }
     }
 }

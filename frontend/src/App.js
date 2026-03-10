@@ -10,6 +10,12 @@ import Sidebar from "./components/Sidebar";
 import { Sun, Moon, Cloud, Leaf, Play, Pause, X } from "lucide-react";
 import { getToken, clearToken } from "./api";
 import { FocusTimerProvider, useFocusTimer } from "./context/FocusTimerContext";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+
+// ── Your Google OAuth Client ID ─────────────────────────────────────────────
+// Replace with your real Client ID from Google Cloud Console
+const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID ||
+    "YOUR_GOOGLE_CLIENT_ID_HERE";
 
 // ── Floating mini-timer pill (global, shown on every page) ─────────────────────
 function MiniTimer({ navigate }) {
@@ -100,10 +106,15 @@ function MiniTimer({ navigate }) {
 // ── Inner app (needs the context) ─────────────────────────────────────────────
 function AppInner() {
     const [isLoggedIn, setIsLoggedIn] = useState(() => !!getToken());
-    const [user, setUser]             = useState(null);
-    const [page, setPage]             = useState("dashboard");
-    const [theme, setTheme]           = useState("light");
-
+    // Restore user from localStorage so profile info survives page refresh
+    const [user, setUser] = useState(() => {
+        try {
+            const stored = localStorage.getItem("momentum_user");
+            return stored ? JSON.parse(stored) : null;
+        } catch { return null; }
+    });
+    const [page, setPage]   = useState("dashboard");
+    const [theme, setTheme] = useState("light");
 
 
     useEffect(() => {
@@ -114,11 +125,13 @@ function AppInner() {
 
     const handleLogin = (data) => {
         setUser(data);
+        localStorage.setItem("momentum_user", JSON.stringify(data));
         setIsLoggedIn(true);
     };
 
     const handleLogout = () => {
         clearToken();
+        localStorage.removeItem("momentum_user");
         setUser(null);
         setIsLoggedIn(false);
         setPage("dashboard");
@@ -213,12 +226,14 @@ function AppInner() {
     );
 }
 
-// ── Root: wraps everything in the timer provider ───────────────────────────────
+// ── Root: wraps everything in the timer provider + Google OAuth ─────────────────
 function App() {
     return (
-        <FocusTimerProvider>
-            <AppInner />
-        </FocusTimerProvider>
+        <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
+            <FocusTimerProvider>
+                <AppInner />
+            </FocusTimerProvider>
+        </GoogleOAuthProvider>
     );
 }
 

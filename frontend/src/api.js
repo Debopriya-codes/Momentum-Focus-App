@@ -18,8 +18,16 @@ async function req(method, path, body) {
     const res = await fetch(`${BASE}${path}`, {
         method,
         headers,
+        credentials: "include",           // required when backend uses allowCredentials(true)
         body: body !== undefined ? JSON.stringify(body) : undefined,
     });
+
+    // Auto-clear stale JWT on 401 so the user gets redirected to login
+    if (res.status === 401) {
+        clearToken();
+        window.location.reload();
+        return;
+    }
 
     if (!res.ok) {
         const text = await res.text();
@@ -30,6 +38,7 @@ async function req(method, path, body) {
     if (res.status === 204 || !ct.includes("application/json")) return null;
     return res.json();
 }
+
 
 const get    = (path)         => req("GET",    path);
 const post   = (path, body)   => req("POST",   path, body);
@@ -42,6 +51,8 @@ export const auth = {
         post("/api/auth/register", { username, email, password }),
     login: (email, password) =>
         post("/api/auth/login", { email, password }),
+    googleLogin: (credential) =>
+        post("/api/auth/google", { credential }),
 };
 
 // ── Tasks ─────────────────────────────────────────────────────────────────────

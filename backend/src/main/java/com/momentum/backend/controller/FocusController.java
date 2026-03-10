@@ -73,20 +73,23 @@ public class FocusController {
     public List<FocusSessionDto.MonthlyData> yearly(@AuthenticationPrincipal UserDetails p) {
         Long uid = getUser(p).getId();
         int year = LocalDate.now().getYear();
-        List<Object[]> raw = sessionRepo.monthlyTotals(uid, year);
 
-        // Build full 12-month list, fill in actual data
-        List<FocusSessionDto.MonthlyData> result = new ArrayList<>();
-        long[] totals = new long[13];
-        for (Object[] row : raw) {
-            int month = ((Number) row[0]).intValue();
-            long mins = ((Number) row[1]).longValue();
-            totals[month] = mins;
+        // Use date-range query (H2/JPA compatible) and aggregate month totals in Java
+        LocalDate startOfYear = LocalDate.of(year, 1, 1);
+        LocalDate endOfYear   = LocalDate.of(year, 12, 31);
+        List<FocusSession> sessions = sessionRepo.findByUserIdAndDateBetween(uid, startOfYear, endOfYear);
+
+        // Sum durations per calendar month
+        int[] totals = new int[13]; // index 1-12
+        for (FocusSession s : sessions) {
+            totals[s.getDate().getMonthValue()] += s.getDuration();
         }
+
+        List<FocusSessionDto.MonthlyData> result = new ArrayList<>();
         for (int m = 1; m <= 12; m++) {
             FocusSessionDto.MonthlyData md = new FocusSessionDto.MonthlyData();
             md.setMonth(Month.of(m).toString().substring(0, 3));
-            md.setFocus((int) totals[m]);
+            md.setFocus(totals[m]);
             result.add(md);
         }
         return result;
