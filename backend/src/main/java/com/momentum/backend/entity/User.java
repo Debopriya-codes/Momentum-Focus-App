@@ -26,16 +26,18 @@ public class User {
     private String password;
 
     // OAuth provider: "LOCAL" or "GOOGLE"
-    @Column(nullable = false)
+    // columnDefinition sets a DB-level DEFAULT so Hibernate's ddl-auto=update
+    // can safely ADD this column to an existing table without violating NOT NULL.
+    @Column(nullable = false, columnDefinition = "VARCHAR(10) DEFAULT 'LOCAL'")
     @Builder.Default
     private String provider = "LOCAL";
 
     // Google's unique subject ID (null for local accounts)
-    @Column(name = "google_id", unique = true)
+    @Column(name = "google_id", unique = true, nullable = true)
     private String googleId;
 
     // Profile picture from Google
-    @Column(name = "avatar_url", length = 1024)
+    @Column(name = "avatar_url", length = 1024, nullable = true)
     private String avatarUrl;
 
     @Column(name = "created_at")
