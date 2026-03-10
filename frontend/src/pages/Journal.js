@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { BookOpen, CalendarDays, Edit2, Info, ChevronLeft, ChevronRight, Check, Loader } from "lucide-react";
 import { journal as api } from "../api";
 
@@ -107,7 +107,7 @@ function Writer() {
         }
     }, [today]);
 
-    useState(() => { loadExisting(); }, []);
+    useEffect(() => { loadExisting(); }, [loadExisting]);
 
     const tab = TABS.find(t => t.id === activeTab);
 
@@ -136,8 +136,6 @@ function Writer() {
 
     return (
         <div className="bg-[url('https://www.transparenttextures.com/patterns/rice-paper.png')] bg-ghibli-card border-2 border-ghibli-border rounded-3xl p-8 shadow-[0_8px_30px_rgba(0,0,0,0.03)] relative">
-            <div className="absolute top-[-12px] left-1/2 -translate-x-1/2 w-48 h-10 bg-ghibli-card/50 shadow-sm border border-white/60 rotate-[1deg] z-20 backdrop-blur-md" />
-
             <div className="flex flex-wrap gap-4 mb-10 border-b-2 border-ghibli-border pb-4 sticky top-0 z-10 pt-4 bg-ghibli-card/80 backdrop-blur-md">
                 {TABS.map(t => {
                     const active   = activeTab === t.id;
@@ -189,7 +187,7 @@ function Reader({ date, onReturn }) {
     const [entry, setEntry] = useState(null);
     const [notFound, setNotFound] = useState(false);
 
-    useState(() => {
+    useEffect(() => {
         api.getByDate(date)
             .then(data => setEntry(data))
             .catch(() => setNotFound(true));
