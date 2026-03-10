@@ -24,8 +24,11 @@ async function req(method, path, body) {
 
     // Auto-clear stale JWT on 401 so the user gets redirected to login
     if (res.status === 401) {
+        const wasLoggedIn = !!getToken();
         clearToken();
-        window.location.reload();
+        if (wasLoggedIn) {
+            window.location.reload();
+        }
         return;
     }
 

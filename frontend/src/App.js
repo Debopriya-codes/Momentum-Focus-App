@@ -153,6 +153,7 @@ function AppInner() {
     const showMiniTimer = page !== "focus";
 
     return (
+        <FocusTimerProvider>
         <div className="min-h-screen bg-ghibli-bg text-ghibli-text flex relative overflow-x-hidden font-ui selection:bg-ghibli-accent selection:text-ghibli-text">
 
             {/* Theme Toggle + Logout */}
@@ -222,6 +223,7 @@ function AppInner() {
             {/* ── Global floating mini-timer ── */}
             {showMiniTimer && <MiniTimer navigate={navigate} />}
         </div>
+        </FocusTimerProvider>
     );
 }
 
@@ -229,9 +231,7 @@ function AppInner() {
 function App() {
     return (
         <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
-            <FocusTimerProvider>
-                <AppInner />
-            </FocusTimerProvider>
+            <AppInner />
         </GoogleOAuthProvider>
     );
 }
